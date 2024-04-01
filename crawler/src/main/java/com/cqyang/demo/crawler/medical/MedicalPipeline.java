@@ -1,19 +1,30 @@
 package com.cqyang.demo.crawler.medical;
 
-import com.alibaba.fastjson.JSON;
-import com.cqyang.demo.crawler.medical.model.MedicalPageResponse;
+import com.cqyang.demo.crawler.core.CrawlerPipeline;
+import com.cqyang.demo.crawler.model.CrawlerPipelineConfig;
+import com.cqyang.demo.crawler.model.enums.CrawlerModuleCodeEnum;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 import us.codecraft.webmagic.ResultItems;
 import us.codecraft.webmagic.Task;
-import us.codecraft.webmagic.pipeline.Pipeline;
 
 @Slf4j
-public class MedicalPipeline implements Pipeline {
+@Component
+public class MedicalPipeline extends CrawlerPipeline<CrawlerPipelineConfig> {
+    @Override
+    protected String getModuleCode() {
+        return CrawlerModuleCodeEnum.MEDICAL_PIPELINE.getCode();
+    }
 
     @Override
-    public void process(ResultItems resultItems, Task task) {
-        log.info("MedicalPipeline process");
-        MedicalPageResponse<?> page = resultItems.get("page");
-        log.info("page: {}", JSON.toJSONString(page));
+    protected void execute(ResultItems resultItems, Task task) {
+
     }
+
+//    @Override
+//    public void process(ResultItems resultItems, Task task) {
+//        log.info("MedicalPipeline process");
+//        MedicalPageResponse<?> page = resultItems.get("page");
+//        log.info("page: {}", JSON.toJSONString(page));
+//    }
 }
