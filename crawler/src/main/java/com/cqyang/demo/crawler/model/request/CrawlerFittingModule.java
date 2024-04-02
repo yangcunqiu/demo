@@ -3,6 +3,8 @@ package com.cqyang.demo.crawler.model.request;
 import com.cqyang.demo.crawler.model.enums.CrawlerFittingModuleTypeEnum;
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * 爬虫要绑定的处理配置, processor pipeline等
  */
@@ -13,7 +15,9 @@ public class CrawlerFittingModule {
      * 类型
      * @see CrawlerFittingModuleTypeEnum
      */
-    private int type;
+    private Integer type;
     // 标识
-    private String code;
+    private List<String> codeList;
+    // 组装配置的json
+    private String fittingConfig;
 }

@@ -7,9 +7,9 @@ import lombok.Getter;
 @Getter
 public enum CrawlerStatusEnum {
 
-    AWAIT(0, "等待"),
-    RUN(1, "运行"),
-    CLOSE(2, "关闭"),
+    INIT(0, "初始化"),
+    RUNNING(1, "运行"),
+    STOPPED(2, "停止"),
     ;
 
 

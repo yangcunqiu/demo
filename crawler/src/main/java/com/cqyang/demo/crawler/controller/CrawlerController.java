@@ -4,6 +4,7 @@ import com.cqyang.demo.crawler.model.CrawlerResult;
 import com.cqyang.demo.crawler.model.enums.CrawlerFittingModuleTypeEnum;
 import com.cqyang.demo.crawler.model.request.AddCrawlerRequest;
 import com.cqyang.demo.crawler.model.vo.CrawlerFittingModuleVO;
+import com.cqyang.demo.crawler.model.vo.CrawlerInfoVO;
 import com.cqyang.demo.crawler.service.CrawlerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/crawler")
+@RequestMapping("/crawlerInfo")
 public class CrawlerController {
 
     @Autowired
@@ -39,5 +40,21 @@ public class CrawlerController {
     public CrawlerResult<?> createCrawler(@RequestBody @Validated AddCrawlerRequest addCrawlerRequest) {
         crawlerService.createCrawler(addCrawlerRequest);
         return CrawlerResult.success();
+    }
+
+    /**
+     * 查询所有爬虫
+     */
+    @GetMapping("/list")
+    public CrawlerResult<List<CrawlerInfoVO>> list() {
+        return CrawlerResult.success(crawlerService.list());
+    }
+
+    /**
+     * 查询爬虫详情
+     */
+    @GetMapping("/find/uniqueKey")
+    public CrawlerResult<CrawlerInfoVO> findByUniqueKey(@RequestParam("uniqueKey") Long uniqueKey) {
+        return CrawlerResult.success(crawlerService.findByUniqueKey(uniqueKey));
     }
 }

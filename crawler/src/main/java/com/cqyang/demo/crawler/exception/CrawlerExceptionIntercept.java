@@ -22,7 +22,7 @@ public class CrawlerExceptionIntercept {
     @ResponseBody
     @ExceptionHandler(Exception.class)
     public CrawlerResult<?> exceptionIntercept(Exception exception) {
-        log.error("Intercept {}", exception.getMessage());
+        exception.printStackTrace();
         return CrawlerResult.fail(new CrawlerException(HttpStatus.INTERNAL_SERVER_ERROR.value()));
     }
 }

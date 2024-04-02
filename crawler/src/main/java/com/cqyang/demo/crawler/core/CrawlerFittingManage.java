@@ -5,6 +5,7 @@ import com.cqyang.demo.crawler.model.CrawlerFittingConfig;
 import com.cqyang.demo.crawler.model.enums.CrawlerFittingModuleTypeEnum;
 import com.cqyang.demo.crawler.model.enums.CrawlerModuleCodeEnum;
 import com.cqyang.demo.crawler.model.vo.CrawlerFittingModuleVO;
+import com.cqyang.demo.crawler.model.vo.CrawlerModuleVO;
 
 import java.util.List;
 import java.util.Objects;
@@ -16,6 +17,7 @@ import java.util.stream.Collectors;
  * R 组装模块实例
  */
 public abstract class CrawlerFittingManage<T extends CrawlerFittingConfig, R> {
+
 
     /**
      * 获取组装类型
@@ -52,21 +54,28 @@ public abstract class CrawlerFittingManage<T extends CrawlerFittingConfig, R> {
      */
     public List<CrawlerFittingModuleVO> list() {
         return listCrawlerModule().stream()
-                .map(module -> (CrawlerModule)module)
-                .filter(module -> Objects.nonNull(module.getModuleCode()))
-                .map(module -> {
-                    String moduleCode = module.getModuleCode();
-                    return CrawlerModuleCodeEnum.getByCode(moduleCode);
-                })
+                .map(module -> (CrawlerModule) module)
+                .map(CrawlerModule::getModuleCode)
                 .filter(Objects::nonNull)
-                .map(moduleCodeEnum -> {
+                .map(CrawlerModuleCodeEnum::getByCode)
+                .filter(Objects::nonNull)
+                .collect(Collectors.groupingBy(CrawlerModuleCodeEnum::getModuleTypeEnum))
+                .entrySet().stream()
+                .map(entry -> {
                     CrawlerFittingModuleVO vo = new CrawlerFittingModuleVO();
-                    vo.setType(moduleCodeEnum.getModuleTypeEnum().getType());
-                    vo.setCode(moduleCodeEnum.getCode());
-                    vo.setClassName(moduleCodeEnum.getClassName());
-                    vo.setDesc(moduleCodeEnum.getDesc());
+                    vo.setType(entry.getKey().getType());
+                    vo.setModuleVOList(entry.getValue().stream()
+                            .map(codeEnum -> {
+                                CrawlerModuleVO moduleVO = new CrawlerModuleVO();
+                                moduleVO.setCode(codeEnum.getCode());
+                                moduleVO.setClassName(codeEnum.getClassName());
+                                moduleVO.setDesc(codeEnum.getDesc());
+                                return moduleVO;
+                            })
+                            .collect(Collectors.toList()));
                     return vo;
-                }).collect(Collectors.toList());
+                })
+                .collect(Collectors.toList());
     }
 
     /**
@@ -77,9 +86,14 @@ public abstract class CrawlerFittingManage<T extends CrawlerFittingConfig, R> {
     /**
      * 组装Crawler
      */
-    public Crawler fittingCrawler(Crawler crawler, List<String> codeList) {
-        return fitting(crawler, getByModuleCode(codeList));
+    public Crawler fittingCrawler(Crawler crawler, List<String> codeList, String fittingConfigJson) {
+        return fitting(crawler, getByModuleCode(codeList), getFittingConfig(fittingConfigJson));
     }
+
+    /**
+     * 获取组装的配置
+     */
+    protected abstract T getFittingConfig(String fittingConfigJson);
 
     /**
      * 根据模块的codeList获取实例list
@@ -92,7 +106,7 @@ public abstract class CrawlerFittingManage<T extends CrawlerFittingConfig, R> {
     /**
      * 组装
      */
-    protected abstract Crawler fitting(Crawler crawler, List<R> rList);
+    protected abstract Crawler fitting(Crawler crawler, List<R> rList, T t);
 
 
 }

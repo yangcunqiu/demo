@@ -1,8 +1,10 @@
 package com.cqyang.demo.crawler.core;
 
+import com.alibaba.fastjson.JSON;
 import com.cqyang.demo.crawler.model.CrawlerFittingConfig;
 import com.cqyang.demo.crawler.model.CrawlerPipelineConfig;
 import com.cqyang.demo.crawler.model.enums.CrawlerFittingModuleTypeEnum;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import us.codecraft.webmagic.pipeline.Pipeline;
@@ -36,7 +38,15 @@ public class CrawlerPipelineFittingManage extends CrawlerFittingManage<CrawlerFi
     }
 
     @Override
-    protected Crawler fitting(Crawler crawler, List<Pipeline> pipelines) {
+    protected CrawlerFittingConfig getFittingConfig(String fittingConfigJson) {
+        if (StringUtils.isBlank(fittingConfigJson)) {
+            return new CrawlerFittingConfig();
+        }
+        return JSON.parseObject(fittingConfigJson, CrawlerFittingConfig.class);
+    }
+
+    @Override
+    protected Crawler fitting(Crawler crawler, List<Pipeline> pipelines, CrawlerFittingConfig fittingConfig) {
         return crawler.setPipelines(pipelines);
     }
 }

@@ -1,17 +1,14 @@
-package com.cqyang.demo.crawler.model.po;
+package com.cqyang.demo.crawler.model.vo;
 
 import com.cqyang.demo.crawler.model.enums.CrawlerSceneEnum;
 import com.cqyang.demo.crawler.model.enums.CrawlerStatusEnum;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
-/**
- * 爬虫信息表, 每条记录对应一个Spider爬虫实例
- */
+import java.util.List;
+
 @Data
-@EqualsAndHashCode(callSuper = true)
-public class CrawlerInfo extends BasicPO {
-    private Integer id;
+public class CrawlerInfoVO {
+
     /**
      * 唯一键
      */
@@ -31,4 +28,8 @@ public class CrawlerInfo extends BasicPO {
      */
     private Integer status;
 
+    /**
+     * 组装模块list
+     */
+    private List<CrawlerFittingModuleVO> fittingModuleVOList;
 }

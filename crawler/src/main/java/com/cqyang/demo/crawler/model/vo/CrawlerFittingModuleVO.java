@@ -3,6 +3,8 @@ package com.cqyang.demo.crawler.model.vo;
 import com.cqyang.demo.crawler.model.enums.CrawlerFittingModuleTypeEnum;
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * 创建和这种爬虫所需要的组件vo
  */
@@ -14,10 +16,14 @@ public class CrawlerFittingModuleVO {
      * @see CrawlerFittingModuleTypeEnum
      */
     private int type;
-    // 标识
-    private String code;
-    // 类名
-    private String className;
-    // 描述
-    private String desc;
+
+    /**
+     * 可组装的模块
+     */
+    private List<CrawlerModuleVO> moduleVOList;
+
+    /**
+     * 组装的配置json
+     */
+    private String fittingConfigJson;
 }

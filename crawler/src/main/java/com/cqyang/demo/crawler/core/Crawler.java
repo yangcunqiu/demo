@@ -709,7 +709,7 @@ public class Crawler implements Runnable, Task {
 
         private int value;
 
-        int getValue() {
+        public int getValue() {
             return value;
         }
 

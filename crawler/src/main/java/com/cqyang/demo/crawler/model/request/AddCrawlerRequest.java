@@ -25,7 +25,7 @@ public class AddCrawlerRequest {
      * 创建组装爬虫的配置
      */
     @NotNull
-    private List<CrawlerFittingModule> fittingModules;
+    private List<CrawlerFittingModule> crawlerFittingModuleList;
 
 
 }

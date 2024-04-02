@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cqyang.demo.crawler.mapper.CrawlerConfigMapper">
+
+    <insert id="batchInsert" parameterType="com.cqyang.demo.crawler.model.po.CrawlerConfig">
+        insert into crawler_config(crawler_unique_key, fitting_module_type, module_code_list, fitting_config_json)
+        values
+        <foreach collection="crawlerConfigList" separator="," item="config">
+            (#{config.crawlerUniqueKey}, #{config.fittingModuleType}, #{config.moduleCodeList}, #{config.fittingConfigJson})
+        </foreach>
+    </insert>
+
+    <select id="findByCrawlerUniqueKey" resultType="com.cqyang.demo.crawler.model.po.CrawlerConfig">
+        select id, crawler_unique_key, fitting_module_type, module_code_list, fitting_config_json from crawler_config where crawler_unique_key = #{uniqueKey} and is_deleted = 0
+    </select>
+
+</mapper>
