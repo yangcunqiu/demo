@@ -9,11 +9,12 @@
         <outputRelativeToContentRoot value="true" />
         <module name="jvm" />
         <module name="problem" />
-        <module name="crawler" />
         <module name="utils" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel target="8" />
+    <bytecodeTargetLevel target="8">
+      <module name="crawler" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
